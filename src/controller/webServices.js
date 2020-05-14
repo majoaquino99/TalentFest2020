@@ -53,13 +53,13 @@ export const getTaskDataByStaffId = (staffID) => {
 			Promise.all(taskWithCompleteData) // allSettled
 				.then(responses => Promise.all(responses.map(element => element.json())))
 				.then(jsonObjects => { 
-					console.log('result of task search by id', jsonObjects);
+					// console.log('result of task search by id', jsonObjects);
 					const taskAssignedToStaff = jsonObjects.filter(element => { 
 						if(element.assignees_ids.includes('' + staffID)) {
 							return true;
 						}
 					});
-					console.log('result of task with same staffID', taskAssignedToStaff);
+					// console.log('result of task with same staffID', taskAssignedToStaff);
 					const finalData = [];
 					taskAssignedToStaff.forEach(element => {
 						const infoARetornar = {
@@ -77,10 +77,9 @@ export const getTaskDataByStaffId = (staffID) => {
 					});
 					
 					console.log('finalData', finalData);
+					return finalData;
 					
 				})
 		})
 		.catch(error => console.log('error', error));
 }
-
-//lista de proyectos asignados al usuario
