@@ -10,6 +10,10 @@ import Loader from 'react-loader';
 
 import { getTaskDataByStaffId, saveMockOnLocalStorage } from '../../controller/webServices';
 import ViewTask from '../viewTaskContainer/ViewTask';
+import graphics from '../../assets/graphic-logo.svg';
+import home from '../../assets/home-logo.svg';
+import IconButton from '../../../node_modules/@material-ui/core/IconButton';
+import Graphic from '../GraphicContainer/GraphicComponent';
 // import { auth } from '';
 
 /* [Sprint 1] VistaHome. 
@@ -68,6 +72,7 @@ const projectListMock = [
 const Home = () => {
 	const classes = useStyles();
 	const [projectList, setProjectList] = useState(projectListMock);  
+	const [view, setView] = useState(false);
 	const [taskList, setTaskList] = useState([
 		{
 			description: "es una tarea con mas descripción",
@@ -133,46 +138,80 @@ const Home = () => {
 	const taskStatusHandler = () => {
 		console.log('hola soy taskStatusHandler');
 	}
+	const goBack = () => {
+		const aux = view - 1;
+		setView(aux);
+	};
 
 
 	return(
-		<div>
-			<HomeComponent.ScreenContainer>
-				<HomeComponent.HomeContainer>
-					<HomeComponent.Header> 
-						<h1>{staffData.firstname ? "Bienvenido, " + staffData.firstname + '!' : null}</h1>
-					</HomeComponent.Header>
-					<HomeComponent.DivisionBar>
-						<FormControl className={classes.formControl}>
-							{/* <InputLabel  style={{ color: blueGrey[900] }}  id="demo-simple-select-label">Proyectos</InputLabel> */}
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-							>									
-								{projectList.map(project => (
-									<MenuItem
-										as="button"
-										key={project.projectId}
-										value={project.projectId}>
-										{project.projectName}
-									</MenuItem>
-								))}		 
-							</Select>
-						</FormControl>
-					</HomeComponent.DivisionBar>
-					<ViewTask taskList={taskList} tempoHandler={tempoHandler} taskStatusHandler={taskStatusHandler} />									
-				</HomeComponent.HomeContainer>
-				<div>
-					<Loader 
-						loaded={hideLoader}
-						lines={20}
-						color="#4997B4"
-						radius={30}
-						length={20}
-					/>	
-				</div>		
-			</HomeComponent.ScreenContainer>
-		</div>
+		<>
+			<div>		
+				<HomeComponent.ScreenContainer>
+					<HomeComponent.HomeContainer>
+						<HomeComponent.Header> 
+							<h1>{staffData.firstname ? "Bienvenido, " + staffData.firstname + '!' : null}</h1>
+							<IconButton
+								name = 'Graphics'
+								value = 'Graphics'
+								onClick = {() => setView(!view)}
+							> 
+								<img                        
+									src = {view === false ? graphics : home} 
+									alt= 'graphics'
+									height='40'
+									width='40'
+								/> 
+							</IconButton>
+						</HomeComponent.Header>
+						<HomeComponent.DivisionBar>
+							<FormControl className={classes.formControl}>
+								{/* <InputLabel  style={{ color: blueGrey[900] }}  id="demo-simple-select-label">Proyectos</InputLabel> */}
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+								>									
+									{projectList.map(project => (
+										<MenuItem
+											as="button"
+											key={project.projectId}
+											value={project.projectId}>
+											{project.projectName}
+										</MenuItem>
+									))}		 
+								</Select>
+							</FormControl>
+						</HomeComponent.DivisionBar>
+						{view === false
+							?		( <ViewTask taskList={taskList} tempoHandler={tempoHandler} taskStatusHandler={taskStatusHandler} /> )	
+							:
+							null}
+						{view === true
+							?
+							(
+								<div>
+									<Graphic/>
+								</div>
+							)
+							:
+							null}			
+					</HomeComponent.HomeContainer>
+					<div>
+						<Loader 
+							loaded={hideLoader}
+							lines={20}
+							color="#4997B4"
+							radius={30}
+							length={20}
+						/>	
+					</div>		
+				</HomeComponent.ScreenContainer>
+			</div>
+
+				
+			
+			
+		</>
 	)
 
 };
