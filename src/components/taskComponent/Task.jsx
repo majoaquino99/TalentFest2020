@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+
 import { FaPlay, FaStop, FaPause } from 'react-icons/fa';
 
 const ContainerStyle = styled.article`
@@ -51,7 +52,7 @@ const Subtitle = styled.h4`
 `;
 
 function Task ( {
-	taskInfo, isActive, inActive, tempoHandler, timerHandler, taskStatusHandler
+	taskInfo, isActive, inActive, tempoHandler, timerHandler, taskStatusHandler, blockingHandler
 } ){
 
 	const [flag, setFlag] = useState(isActive);
@@ -77,6 +78,7 @@ function Task ( {
 								setFlag(false);
 								timerHandler.pause(); 
 								tempoHandler('pause');
+								blockingHandler(false);
 							}}
 						><FaPause/>
 						</Icon>
@@ -89,6 +91,7 @@ function Task ( {
 								timerHandler.start();
 								taskStatusHandler(taskInfo.taskId);
 								tempoHandler('start');
+								blockingHandler(true);
 							}}
 						><FaPlay/>
 						</Icon>}
@@ -100,6 +103,7 @@ function Task ( {
 							timerHandler.reset();
 							taskStatusHandler(-1);
 							tempoHandler('stop');
+							blockingHandler(false);
 						}}
 					><FaStop/>
 					</Icon>

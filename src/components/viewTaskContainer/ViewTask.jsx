@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Timer from 'react-compound-timer';
 import styled from 'styled-components';
 import Task from '../taskComponent/Task';
+import BlockUi from 'react-block-ui';
+import 'react-block-ui/style.css';
 
 const Container = styled.div`
     text-align: center;
@@ -33,6 +35,8 @@ const ViewTask = ({taskList, tempoHandler, taskStatusHandler}) => {
 	const [taskIsActive, setTaskIsActive] = useState(-1);
 	const normalTask = [];
 	const activeTask = [];
+	const [blocking, setBlocking] = useState(false);
+
 
 	const changeStatusTask = (status) => {
 		setTaskIsActive(status);
@@ -70,24 +74,28 @@ const ViewTask = ({taskList, tempoHandler, taskStatusHandler}) => {
 										isActive={true}
 										tempoHandler={tempoHandler} 
 										timerHandler={{ start, resume, pause, stop, reset}} 
-										taskStatusHandler={changeStatusTask}>
+										taskStatusHandler={changeStatusTask}
+										blockingHandler={setBlocking}>
 									</Task>);						
 								})}
 							</ActiveTaskArea> 
 							: null
 						}
-						<TaskListArea>
-							{ normalTask.map(element => {
-								return (<Task 
-									key={element.taskId} 
-									taskInfo={element} 
-									isActive={false}
-									tempoHandler={tempoHandler} 
-									timerHandler={{ start, resume, pause, stop, reset}} 
-									taskStatusHandler={changeStatusTask}>
-								</Task>);						
-							})}
-						</TaskListArea>
+						<BlockUi tag="div" blocking={blocking}>
+							<TaskListArea>
+								{ normalTask.map(element => {
+									return (<Task 
+										key={element.taskId} 
+										taskInfo={element} 
+										isActive={false}
+										tempoHandler={tempoHandler} 
+										timerHandler={{ start, resume, pause, stop, reset}} 
+										taskStatusHandler={changeStatusTask}
+										blockingHandler={setBlocking}>
+									</Task>);						
+								})}
+							</TaskListArea>
+						</BlockUi>
 					</>
 				)}
 			</Timer>

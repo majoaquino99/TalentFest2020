@@ -26,6 +26,7 @@ const Header = styled.div`
     height: 64px;
     display: flex;
     flex-direction: row !important;
+	justify-content:  space-between;
     align-items: center;
     >h1{
         color: black;
