@@ -1,11 +1,22 @@
 import React from 'react';
-import ViewTask from './views/ViewTask';
+import {
+	Route, Redirect, Switch,
+	BrowserRouter as Router,
+} from 'react-router-dom';
+// import SignIn from './components/signIn/SignIn';
+import HomeView from './views/HomeView';
+import { getTaskDataByStaffId } from './controller/webServices';
+
 
 function App() {
 	return (
-		<div className="LandingView">
-			<ViewTask/>
-		</div>
+		<Router>
+			<Switch>
+				{/* <Route exact path="/" component={currentUser ? View.Home : View.LandingPage} /> */}
+				<Route exact path="/" component={HomeView} />
+				<Redirect to="/" />
+			</Switch>
+		</Router>
 	);
 }
 
