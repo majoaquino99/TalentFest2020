@@ -1,3 +1,5 @@
+import mockTimeTables from './mockTimeTables';
+
 const API_URL = 'https://cubosv2.4040.wtf/api/'
 
 
@@ -9,7 +11,7 @@ const createHeader = (type) => {
 		method: type,
 		headers: myHeaders,
 	};
-}
+};
 
 const apiCallFunction = (url = '', http_method = 'GET') => {
 	const requestOptions = createHeader(http_method);
@@ -37,7 +39,7 @@ const getStaffDataById = (staffID) => {
 				reject (error);
 			});
 	});	
-}
+};
 
 
 export const getTaskDataByStaffId = (staffID) => {
@@ -109,4 +111,60 @@ export const getTaskDataByStaffId = (staffID) => {
 				reject (error);
 			});
 	});
-}
+};
+
+/*
+// -----------------------------
+export const saveMockOnLocalStorage = () => {
+	console.log(mockTimeTables);
+	localStorage.setItem('mockTimeTables', JSON.stringify(mockTimeTables));
+};
+
+export const setTimeSheet = (object, taskId) => {
+	// Hacer el put a la API - Mock mode: leer el localstorage push object al arreglo y volver a guardar en localstorage
+	let retrievedObject = JSON.parse(localStorage.getItem('mockTimeTables'));
+	retrievedObject.forEach(element => {
+		if(element.id === taskId){
+			element.timesheets.push(object);
+		}
+	});
+	
+	console.log('retrievedObject: ', retrievedObject);
+};
+
+const timestampStart = () => {
+	const now = moment();
+	console.log(typeof now);
+	const timeObject = {
+		"id": "2",
+		"note": "de prueba",
+		"start_time": '' + now,
+		"end_time": "1581920029",
+		"task_id": "1",
+		"staff_id": "1",
+		"full_name": "Gabriela J",
+		"time_spent": "72"
+	}
+	setTimeHandler(timeObject);
+};
+
+const timestampEnd = () => {
+	const later = moment();
+	const timeObject = {};
+	Object.assign(timeObject, timeHandler);
+	timeObject.end_time = later;
+	const timeCalc = moment(timeObject.start_time, timeObject.end_time);
+	timeObject.time_spent = timeCalc;
+	//Guardar en API
+	setTimeSheet(timeObject, taskId);
+	setTimeHandler({});
+};
+
+// Calculos para graficas
+export const getGraphData = (taskList) => {
+	taskList.forEach(element => {
+		if(element.id === taskId){
+			element.timesheets.push(object);
+		}
+	});
+};*/

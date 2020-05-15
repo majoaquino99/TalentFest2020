@@ -8,7 +8,7 @@ import Select from '@material-ui/core/Select';
 import { blueGrey } from '@material-ui/core/colors';
 import Loader from 'react-loader';
 
-import { getTaskDataByStaffId } from '../../controller/webServices';
+import { getTaskDataByStaffId, saveMockOnLocalStorage } from '../../controller/webServices';
 import ViewTask from '../viewTaskContainer/ViewTask';
 // import { auth } from '';
 
@@ -98,8 +98,9 @@ const Home = () => {
 	console.log('projectList', projectList);
 	console.log('staffData', staffData);
 
-	/*
 	useEffect(() => {
+		// saveMockOnLocalStorage();
+		/*
 		setHideLoader(false);
 		// obtengo un objeto de la base de datos (API)
 		getTaskDataByStaffId(staffID)
@@ -112,6 +113,7 @@ const Home = () => {
 				setHideLoader(true);
 			})
 			.catch(error => console.log('error', error));
+		*/
 
 		/*if (staffID) {
 			const unsubscribe = (() => {
@@ -121,9 +123,8 @@ const Home = () => {
 			return unsubscribe; 
 		} else {
 			return <Redirect to='/' />;
-		}   
+		}   */
 	}, [staffID]);
-	*/
 
 	const tempoHandler = (type) => {
 		console.log('hola soy el tampo handle llamado por: ', type);
