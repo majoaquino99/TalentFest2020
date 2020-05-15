@@ -17,8 +17,6 @@ const HomeContainer = styled.div`
 	width: 600px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 `;
 const Header = styled.div`
 	background-color: white;

@@ -8,10 +8,11 @@ import 'react-block-ui/style.css';
 const Container = styled.div`
     text-align: center;
     width: 600px;
-    height: 100%;
+    height: 80%;
     display: flex;
-    flex-flow: wrap column;
+    flex-flow: column;
     align-self: baseline;
+	overflow-y: auto;
 `;
 
 const ActiveTaskArea = styled.div`
@@ -26,9 +27,9 @@ const TaskListArea = styled.div`
 	flex:2;
     height: 400px;
     display: flex;
-    flex-flow: column wrap;
+    flex-flow: column;
 	align-items: center;
-	padding-top: 20px;
+	padding-top: 20px;	
 `;
 
 const ViewTask = ({taskList, tempoHandler, taskStatusHandler}) => {
@@ -38,8 +39,9 @@ const ViewTask = ({taskList, tempoHandler, taskStatusHandler}) => {
 	const [blocking, setBlocking] = useState(false);
 
 
-	const changeStatusTask = (status) => {
-		setTaskIsActive(status);
+	const changeStatusTask = (taskId) => {
+		setTaskIsActive(taskId);
+		taskStatusHandler(taskId);
 	}
 
 	taskList.forEach((element) => {

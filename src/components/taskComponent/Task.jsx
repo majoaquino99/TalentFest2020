@@ -24,6 +24,7 @@ const Icon = styled.div`
     color: ${(props) => props.color};
 `;
 const Titles = styled.div`
+	flex:2;
     color:#002633;
 `;
 const ContainerPlayer = styled.div`
@@ -31,6 +32,7 @@ const ContainerPlayer = styled.div`
     display:flex;
     flex-direction:column;
     justify-content:space-around;
+	flex: 1;
 `;
 const Player = styled.div`
     display:flex;
@@ -64,7 +66,7 @@ function Task ( {
 					{taskInfo.taskName }
 				</Title>
 				<Subtitle>
-					{taskInfo.priority}
+					{'Prioridad: ' + taskInfo.priority}
 				</Subtitle>
 			</Titles>
 			<ContainerPlayer>
@@ -77,7 +79,7 @@ function Task ( {
 							onClick={() => {
 								setFlag(false);
 								timerHandler.pause(); 
-								tempoHandler('pause');
+								tempoHandler('pause', taskInfo.taskId);
 								blockingHandler(false);
 							}}
 						><FaPause/>
@@ -90,7 +92,7 @@ function Task ( {
 								setFlag(true);
 								timerHandler.start();
 								taskStatusHandler(taskInfo.taskId);
-								tempoHandler('start');
+								tempoHandler('start', taskInfo.taskId);
 								blockingHandler(true);
 							}}
 						><FaPlay/>
@@ -102,7 +104,7 @@ function Task ( {
 							timerHandler.stop();
 							timerHandler.reset();
 							taskStatusHandler(-1);
-							tempoHandler('stop');
+							tempoHandler('stop', taskInfo.taskId);
 							blockingHandler(false);
 						}}
 					><FaStop/>

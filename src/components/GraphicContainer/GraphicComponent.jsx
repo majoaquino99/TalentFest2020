@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
 	PieChart, Pie, Cell,
 } from 'recharts';
@@ -28,17 +28,17 @@ const renderCustomizedLabel = ({
 	);
 };
 
-const Graphic = () => {
+const Graphic = (taskList) => {
 	return (
 		<GraphicComponent.Container>
-			<PieChart width={400} height={400}>
+			<PieChart width={600} height={600}>
 				<Pie
 					data={data}
-					cx={200}
-					cy={200}
+					cx={300}
+					cy={300}
 					labelLine={false}
 					label={renderCustomizedLabel}
-					outerRadius={80}
+					outerRadius={180}
 					fill="#8884d8"
 					dataKey="value"
 				>
