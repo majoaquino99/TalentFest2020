@@ -8,7 +8,7 @@ import 'react-block-ui/style.css';
 const Container = styled.div`
     text-align: center;
     width: 600px;
-    height: 80%;
+    height: 80vh;
     display: flex;
     flex-flow: column;
     align-self: baseline;
@@ -17,7 +17,7 @@ const Container = styled.div`
 
 const ActiveTaskArea = styled.div`
 	display: flex;
-	flex-flow: column wrap;
+	flex-direction: column;
 	align-items: center;
 	flex: 1;
 	height: 100px;

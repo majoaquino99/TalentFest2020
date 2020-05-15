@@ -13,7 +13,7 @@ const ScreenContainer = styled.div`
 `;
 const HomeContainer = styled.div`
     background-color:#FFFFFF;
-	min-height:100vh;
+	min-height: 100vh;
 	width: 600px;
 	display: flex;
 	flex-direction: column;
