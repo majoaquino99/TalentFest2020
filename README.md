@@ -34,6 +34,14 @@ Definimos seis historias de usuario. Planeamos trabajar una historia a la vez, c
 ## 4. Historias de Usuario
 
 ## 5. Prototipo
+<img src = "https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/FDDhome.png" width = "50%">
+
+https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/FDDtaskcard.png
+https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/FDDviewtasks.png
+https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/prototype-graphview.png
+https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/prototype-homeview.png
+https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/prototype-login.png
+https://github.com/majoaquino99/TalentFest2020/blob/majo/src/assets/images/prototype-viewtasks.png
 
 ## 6. Producto Final
 
