@@ -7,35 +7,19 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { blueGrey } from '@material-ui/core/colors';
 import Loader from 'react-loader';
+import moment from 'moment';
 
-import { getTaskDataByStaffId } from '../../controller/webServices';
+import {
+	saveMockOnLocalStorage,
+	setTimeSheet,
+	getGraphData } from '../../controller/webServices';
+import mockData from '../../controller/mockData';
 import ViewTask from '../viewTaskContainer/ViewTask';
 import graphics from '../../assets/icons/graphic-logo.svg';
 import home from '../../assets/icons/home-logo.svg';
 import IconButton from '../../../node_modules/@material-ui/core/IconButton';
 import Graphic from '../GraphicContainer/GraphicComponent';
-// import { auth } from '';
 
-/* [Sprint 1] VistaHome. 
-const { staffID } = useContext(auth); 
-const [taskList, setTaskList] = useState([]); 
-
-useEffect(() => {}, [staffID]); => 
-Llamada a API para obtener todos los proyectos en los que participa nuestro usuario. 
-Esta informacion se guarda en projectList. Despues realiza una llamada a API para sacar
-las tareas asignadas al usuario en el projectList[0] y las almacena en taskList. 
-Usando el context de Auth almacena el nombre de usuario en staffName.
-
- [Sprint 2] const [projectList, setProjectList] = useState([]);  
-
- [Sprint 3] const [view, setView] = useState(‘viewTask’); 
- // viewTask || viewGraph 
-
- const [taskInProgress, setTaskInProgress] = useState(false);
- const staffName; 
- const tempoHandler = (type) ={ //Push time data to API }; 
- const taskStatusHandler = (newStatus) => {// Actualizar el estado de la tarea en API, 
- activar un reacarga de data, setTaskList } */
 const projectListMock = [
 	{ 
 		id:1,
@@ -70,41 +54,37 @@ const projectListMock = [
 
 
 const Home = () => {
+	const [_taskList, _projectList, _staffData] = mockData;
 	const classes = useStyles();
-	const [projectList, setProjectList] = useState(projectListMock);  
+	const [projectList, setProjectList] = useState(_projectList.projectList);  
 	const [view, setView] = useState(false);
-	const [taskList, setTaskList] = useState([
-		{
-			description: "es una tarea con mas descripción",
-			priority: "1",
-			status: "2",
-			taskId: "53",
-			taskName: "nueva tarea 14",
-		},
-		{
-			description: "es una tarea con mas descripción",
-			priority: "1",
-			status: "2",
-			taskId: "54",
-			taskName: "nueva tarea 20",
-		}
-	]); 
-	const [taskInProgress, setTaskInProgress] = useState(false);
+	const [taskList, setTaskList] = useState(_taskList.taskList);
+	const [graphdata, setGraphdata] = useState();
+	const CONSTANTE = 1;
+	//staffData.staffid
+	const [staffData, setStaffData] = useState(_staffData.staffData);
+	const [taskInProgress, setTaskInProgress] = useState(-1);
+	const [timeHandler, setTimeHandler] = useState({});
 	const [hideLoader, setHideLoader] = useState(true);	
-	// const { staffID } = useContext(auth);
-	// getTaskDataByStaffId
-	const staffID = 1;
-	const [staffData, setStaffData] = useState({
-		firstname: "Gabriela",
-		full_name: "Gabriela J",
-		staffid: "1",
-	}); 
-	console.log('taskList', taskList);
-	console.log('projectList', projectList);
-	console.log('staffData', staffData);
+	// console.log('taskList', taskList);
+	// console.log('projectList', projectList);
+	// console.log('staffData', staffData);
 
-	/*
 	useEffect(() => {
+		saveMockOnLocalStorage();
+		// setGraphdata(getGraphData(taskList));
+		//TODO: Bloque de consumo de API, no se uso por problema con cantidad de llamdas permitidas al servidor
+		/*
+		getMockData().then(mockData => {
+			
+			setProjectList(_projectList);
+			console.log(_taskList);
+			setTaskList(_taskList);
+			setStaffData(_staffData);
+		}).catch(error => console.log('error', error));
+		*/
+		
+		/*
 		setHideLoader(false);
 		// obtengo un objeto de la base de datos (API)
 		getTaskDataByStaffId(staffID)
@@ -126,21 +106,63 @@ const Home = () => {
 			return unsubscribe; 
 		} else {
 			return <Redirect to='/' />;
-		}   
-	}, [staffID]);
-	*/
+		}   */
+	}, [CONSTANTE]);
 
-	const tempoHandler = (type) => {
-		console.log('hola soy el tampo handle llamado por: ', type);
+	const taskStatusHandler = (taskId) => {
+		setTaskInProgress(taskId);
 	}
 
-	const taskStatusHandler = () => {
-		console.log('hola soy taskStatusHandler');
+	const timestampStart = (taskId) => {
+		const now = moment().format('X');
+		const timeObject = {
+			"id": staffData.staffid,
+			"note": "Hola mundo",
+			"start_time": now,
+			"end_time": null,
+			"task_id": taskId,
+			"staff_id": "1",
+			"full_name": "Gabriela J",
+			"time_spent": "0"
+		}		
+		setTimeHandler(timeObject);
+	};
+
+	const timestampEnd = (taskId) => {	
+		if(timeHandler.id){
+			const later = moment().format('X');
+			const timeObject = {};
+			Object.assign(timeObject, timeHandler);
+			timeObject.end_time = later;
+			const timeCalc = moment(later, 'X').diff(moment(timeObject.start_time, 'X'), 'seconds');
+			timeObject.time_spent = '' + timeCalc;
+			// console.log(timeObject);
+			//Guardar en API
+			setTimeSheet(timeObject, taskId);
+			setTimeHandler({});
+		}		
+	};
+
+	const tempoHandler = (type, taskId) => {
+		switch(type){
+			case 'start':
+				timestampStart(taskId);
+				break;
+			case 'pause':
+			case 'stop':
+				timestampEnd(taskId);
+				break;
+			default:
+		}
 	}
+
+
+	/*
 	const goBack = () => {
 		const aux = view - 1;
 		setView(aux);
 	};
+	*/
 
 
 	return(
@@ -170,10 +192,10 @@ const Home = () => {
 									labelId="demo-simple-select-label"
 									id="demo-simple-select"
 								>									
-									{projectList.map(project => (
+									{projectList.map((project, index) => (
 										<MenuItem
 											as="button"
-											key={project.projectId}
+											key={index}
 											value={project.projectId}>
 											{project.projectName}
 										</MenuItem>
@@ -182,18 +204,21 @@ const Home = () => {
 							</FormControl>
 						</HomeComponent.DivisionBar>
 						{view === false
-							?		( <ViewTask taskList={taskList} tempoHandler={tempoHandler} taskStatusHandler={taskStatusHandler} /> )	
-							:
-							null}
+							?( <ViewTask
+								taskList={taskList}
+								tempoHandler={tempoHandler}
+								taskStatusHandler={taskStatusHandler}
+							/> )	
+							: null
+						}
 						{view === true
-							?
-							(
-								<div>
-									<Graphic/>
-								</div>
-							)
-							:
-							null}			
+							?(<div>
+								<Graphic
+									taskList={taskList}
+								/>
+							</div>)
+							: null
+						}			
 					</HomeComponent.HomeContainer>
 					<div>
 						<Loader 

@@ -1,3 +1,6 @@
+import mockTimeTables from './mockTimeTables';
+import mockData from './mockData';
+
 const API_URL = 'https://cubosv2.4040.wtf/api/'
 
 
@@ -9,7 +12,7 @@ const createHeader = (type) => {
 		method: type,
 		headers: myHeaders,
 	};
-}
+};
 
 const apiCallFunction = (url = '', http_method = 'GET') => {
 	const requestOptions = createHeader(http_method);
@@ -37,7 +40,7 @@ const getStaffDataById = (staffID) => {
 				reject (error);
 			});
 	});	
-}
+};
 
 
 export const getTaskDataByStaffId = (staffID) => {
@@ -53,7 +56,7 @@ export const getTaskDataByStaffId = (staffID) => {
 				/*taskWithProjectIdData.forEach(element => {
 				taskWithCompleteData.push(apiCallFunction(API_URL + 'tasks/' + element.id, 'GET'));
 			});*/
-				for(let i=0; i < 5; i++) {
+				for(let i=0; i < 10; i++) {
 					taskWithCompleteData.push(apiCallFunction(API_URL + 'tasks/' + taskWithProjectIdData[i].id, 'GET'));
 				}
 
@@ -109,4 +112,76 @@ export const getTaskDataByStaffId = (staffID) => {
 				reject (error);
 			});
 	});
+};
+
+
+//------------------------------
+export const getMockData = () => {
+	return mockData;
 }
+
+
+// -----------------------------
+export const saveMockOnLocalStorage = () => {
+	// console.log(mockTimeTables);
+	localStorage.setItem('mockTimeTables', JSON.stringify(mockTimeTables));
+};
+
+export const setTimeSheet = (object, taskId) => {
+	// Hacer el put a la API - Mock mode: leer el localstorage push object al arreglo y volver a guardar en localstorage
+	
+	let retrievedObject = JSON.parse(localStorage.getItem('mockTimeTables'));
+	retrievedObject.forEach(element => {
+		if(element.id === taskId){
+			element.timesheets.push(object);
+		}
+	});
+	saveMockOnLocalStorage(retrievedObject);
+	localStorage.setItem('mockTimeTables', JSON.stringify(retrievedObject));	
+	console.log('Nuevo registro: ', retrievedObject);
+};
+
+//==========
+export const getGraphData = ({taskList}) => {
+	const sum = (accumulator, currentValue) => accumulator + currentValue; // time_spent
+	//Llamada a API task por id, iterar en el timeSheet y sumar los timpos, para retornarlos en
+	// un objeto {'taskName': suma}
+	const data = JSON.parse(localStorage.getItem('mockTimeTables'));
+	const graphData = [];
+	console.log('data ', data); //id
+	console.log('taskList ', taskList); //taskId
+
+	for(let i=0; i < taskList.length; i++){
+		const [element] = data.filter(item => item.id === taskList[i].taskId);
+		console.log('element', '\n', element);
+		/*if(element.length > 0) {
+			let sum;
+			for(let j=0; j < element.timesheets.length; j++) {
+				sum += element.timesheets.time_spent;
+			}
+			console.log('name', element.timesheets[0].note);
+			console.log('time ', sum);
+		}*/
+	}
+
+
+	/*
+	data.forEach((element, index) => {
+		for(let i=0; i < taskList.length; i++){
+			if(element.id === taskList[i].taskId){
+				if(element.timesheets.length > 0) {
+					const timeSum = element.timesheets.reduce(sum);
+					const tempObject = {
+						[taskList[i].taskName]: timeSum,
+					}
+					
+					graphData.push(tempObject);
+				}
+			}
+		}
+
+	});
+	console.log('********');
+	console.log('graphData ', graphData);
+	return graphData;*/
+};
