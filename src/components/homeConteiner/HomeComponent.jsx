@@ -10,8 +10,8 @@ import Loader from 'react-loader';
 
 import { getTaskDataByStaffId } from '../../controller/webServices';
 import ViewTask from '../viewTaskContainer/ViewTask';
-import graphics from '../../assets/graphic-logo.svg';
-import home from '../../assets/home-logo.svg';
+import graphics from '../../assets/icons/graphic-logo.svg';
+import home from '../../assets/icons/home-logo.svg';
 import IconButton from '../../../node_modules/@material-ui/core/IconButton';
 import Graphic from '../GraphicContainer/GraphicComponent';
 // import { auth } from '';
