@@ -1,9 +1,10 @@
 import React from 'react';
+import ViewTask from './views/ViewTask';
 
 function App() {
 	return (
-		<div className="App">
-			
+		<div className="LandingView">
+			<ViewTask/>
 		</div>
 	);
 }

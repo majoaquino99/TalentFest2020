@@ -5,6 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(206, 211, 182, 0.733);
 }
 
 code {
@@ -12,6 +15,9 @@ code {
     monospace;
 }
 
-.App {
+.LandingView {
   text-align: center;
+  background-color: rgb(206, 211, 182);
+  width: 600px;
+  height: 600px; 
 }
