@@ -20,13 +20,13 @@ const HomeContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 `;
-const Header = styled.header`
-    position: absolute;
-    top: 0px;
+const Header = styled.div`
+	background-color: white;
     width: 600px;
     height: 64px;
     display: flex;
     flex-direction: row !important;
+	justify-content:  space-between;
     align-items: center;
     >h1{
         color: black;
@@ -37,8 +37,6 @@ const Header = styled.header`
  
 const DivisionBar = styled.div`
     background: #FBD104;
-    position: absolute;
-    top: 65px;
     width: 600px;
     height: 60px;
     display: flex;

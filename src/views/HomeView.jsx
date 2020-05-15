@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from '../components/homeConteiner/HomeComponent';
-​
+
 const HomeView = () => {
 	return(
 		<>
@@ -8,5 +8,5 @@ const HomeView = () => {
 		</>
 	)
 };
-​
+
 export default HomeView;

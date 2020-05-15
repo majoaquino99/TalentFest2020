@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext }from 'react';
 import * as HomeComponent from './StyleHomeComponent';
-import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -8,6 +7,13 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { blueGrey } from '@material-ui/core/colors';
 import Loader from 'react-loader';
+
+import { getTaskDataByStaffId } from '../../controller/webServices';
+import ViewTask from '../viewTaskContainer/ViewTask';
+import graphics from '../../assets/graphic-logo.svg';
+import home from '../../assets/home-logo.svg';
+import IconButton from '../../../node_modules/@material-ui/core/IconButton';
+import Graphic from '../GraphicContainer/GraphicComponent';
 // import { auth } from '';
 
 /* [Sprint 1] VistaHome. 
@@ -66,15 +72,53 @@ const projectListMock = [
 const Home = () => {
 	const classes = useStyles();
 	const [projectList, setProjectList] = useState(projectListMock);  
-	const [taskList, setTaskList] = useState([]); 
-	const [loaded, setLoaded] = useState(false);
+	const [view, setView] = useState(false);
+	const [taskList, setTaskList] = useState([
+		{
+			description: "es una tarea con mas descripción",
+			priority: "1",
+			status: "2",
+			taskId: "53",
+			taskName: "nueva tarea 14",
+		},
+		{
+			description: "es una tarea con mas descripción",
+			priority: "1",
+			status: "2",
+			taskId: "54",
+			taskName: "nueva tarea 20",
+		}
+	]); 
+	const [taskInProgress, setTaskInProgress] = useState(false);
+	const [hideLoader, setHideLoader] = useState(true);	
+	// const { staffID } = useContext(auth);
+	// getTaskDataByStaffId
+	const staffID = 1;
+	const [staffData, setStaffData] = useState({
+		firstname: "Gabriela",
+		full_name: "Gabriela J",
+		staffid: "1",
+	}); 
+	console.log('taskList', taskList);
+	console.log('projectList', projectList);
+	console.log('staffData', staffData);
 
-	/* 	
-	const { staffID } = useContext(auth);
-
+	/*
 	useEffect(() => {
+		setHideLoader(false);
 		// obtengo un objeto de la base de datos (API)
-		if (staffID) {
+		getTaskDataByStaffId(staffID)
+			.then(data => {
+				setProjectList(data.projectList);
+				console.log(data.taskList);
+				setTaskList(data.taskList);
+				setStaffData(data.staffData);
+			}).then(() => {
+				setHideLoader(true);
+			})
+			.catch(error => console.log('error', error));
+
+		/*if (staffID) {
 			const unsubscribe = (() => {
 				settaskList();
 				setLoaded(true)
@@ -82,50 +126,91 @@ const Home = () => {
 			return unsubscribe; 
 		} else {
 			return <Redirect to='/' />;
-		}       
-	}, [staffID]); */
+		}   
+	}, [staffID]);
+	*/
+
+	const tempoHandler = (type) => {
+		console.log('hola soy el tampo handle llamado por: ', type);
+	}
+
+	const taskStatusHandler = () => {
+		console.log('hola soy taskStatusHandler');
+	}
+	const goBack = () => {
+		const aux = view - 1;
+		setView(aux);
+	};
 
 
 	return(
-		<div>
-			<HomeComponent.ScreenContainer>
-				<HomeComponent.HomeContainer>
-					<HomeComponent.Header> 
-						<h1>Bienvenido, #usuario!</h1>
-					</HomeComponent.Header>
-					<HomeComponent.DivisionBar>
-						<FormControl className={classes.formControl}>
-							<InputLabel  style={{ color: blueGrey[900] }}  id="demo-simple-select-label">Proyectos</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-							>									
-								{projectList.map(project => (
-									<MenuItem
-										as="button"
-										key={project.name}
-										value={project.id}>
-										{project.name}
-									</MenuItem>
-								))}		 
-							</Select>
-						</FormControl>
-					</HomeComponent.DivisionBar>
+		<>
+			<div>		
+				<HomeComponent.ScreenContainer>
+					<HomeComponent.HomeContainer>
+						<HomeComponent.Header> 
+							<h1>{staffData.firstname ? "Bienvenido, " + staffData.firstname + '!' : null}</h1>
+							<IconButton
+								name = 'Graphics'
+								value = 'Graphics'
+								onClick = {() => setView(!view)}
+							> 
+								<img                        
+									src = {view === false ? graphics : home} 
+									alt= 'graphics'
+									height='40'
+									width='40'
+								/> 
+							</IconButton>
+						</HomeComponent.Header>
+						<HomeComponent.DivisionBar>
+							<FormControl className={classes.formControl}>
+								{/* <InputLabel  style={{ color: blueGrey[900] }}  id="demo-simple-select-label">Proyectos</InputLabel> */}
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+								>									
+									{projectList.map(project => (
+										<MenuItem
+											as="button"
+											key={project.projectId}
+											value={project.projectId}>
+											{project.projectName}
+										</MenuItem>
+									))}		 
+								</Select>
+							</FormControl>
+						</HomeComponent.DivisionBar>
+						{view === false
+							?		( <ViewTask taskList={taskList} tempoHandler={tempoHandler} taskStatusHandler={taskStatusHandler} /> )	
+							:
+							null}
+						{view === true
+							?
+							(
+								<div>
+									<Graphic/>
+								</div>
+							)
+							:
+							null}			
+					</HomeComponent.HomeContainer>
 					<div>
 						<Loader 
-							loaded={loaded}
+							loaded={hideLoader}
 							lines={20}
 							color="#4997B4"
 							radius={30}
 							length={20}
 						/>	
-					</div>
-					<div>
-						<button onClick={() => setLoaded(true)}>Stop Loader</button>	
-					</div>										
-				</HomeComponent.HomeContainer>		
-			</HomeComponent.ScreenContainer>
-		</div>
+					</div>		
+				</HomeComponent.ScreenContainer>
+			</div>
+
+				
+			
+			
+		</>
 	)
 
 };
