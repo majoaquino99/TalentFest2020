@@ -12,12 +12,11 @@ const ScreenContainer = styled.div`
 	align-items: center;
 `;
 const HomeContainer = styled.div`
-	background: white;
-	height: 800px;
+    background-color:#FFFFFF;
+	min-height:100vh;
 	width: 600px;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 `;
 const Header = styled.div`
